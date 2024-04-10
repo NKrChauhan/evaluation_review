@@ -1,7 +1,5 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-
 from apps.review.services.review import ReviewService
 from .permissions import AuthorPermission
 from .models import Content
