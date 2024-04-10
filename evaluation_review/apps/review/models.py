@@ -9,8 +9,12 @@ class Review(models.Model):
     content = models.ForeignKey(Content, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ['reviewer', 'content']
+
     def __str__(self):
         return f"Review by {self.reviewer.username} for {self.content}"
+
 
 class ReviewDetail(models.Model):
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
