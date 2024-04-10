@@ -11,7 +11,7 @@ from .serializers import ContentSerializer
 class ContentUploadView(generics.CreateAPIView):
     queryset = Content.objects.all()
     serializer_class = ContentSerializer
-    permission_classes = [IsAuthenticated, AuthorPermission]
+    permission_classes = [AuthorPermission]
 
     def perform_create(self, serializer):
         serializer.save(uploaded_by=self.request.user)
@@ -20,7 +20,7 @@ class ContentUploadView(generics.CreateAPIView):
 class ContentUpdateView(generics.RetrieveUpdateAPIView):
     queryset = Content.objects.all()
     serializer_class = ContentSerializer
-    permission_classes = [IsAuthenticated, AuthorPermission]
+    permission_classes = [AuthorPermission]
 
     def perform_update(self, serializer):
         serializer.save(uploaded_by=self.request.user)
@@ -28,6 +28,7 @@ class ContentUpdateView(generics.RetrieveUpdateAPIView):
 
 class ContentReviewStatusView(generics.RetrieveAPIView):
     queryset = Content.objects.all()
+    permission_classes = [AuthorPermission]
     
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
