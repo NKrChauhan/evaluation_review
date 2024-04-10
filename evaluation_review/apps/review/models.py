@@ -2,10 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from apps.content.models import Content
 from apps.compliance.models import Guideline
+from django.contrib.auth.models import User
 
 
 class Review(models.Model):
-    reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
+    # Null = True is used since there is no authentication being set up yet
+    reviewer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     content = models.ForeignKey(Content, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
