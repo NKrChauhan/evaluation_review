@@ -12,7 +12,10 @@ class ContentUploadView(generics.CreateAPIView):
     permission_classes = [AuthorPermission]
 
     def perform_create(self, serializer):
-        serializer.save(uploaded_by=self.request.user)
+        if not self.request.user.is_anonymous:
+            serializer.save(uploaded_by=self.request.user)
+        else:
+            serializer.save()
 
 
 class ContentUpdateView(generics.RetrieveUpdateAPIView):
@@ -21,7 +24,10 @@ class ContentUpdateView(generics.RetrieveUpdateAPIView):
     permission_classes = [AuthorPermission]
 
     def perform_update(self, serializer):
-        serializer.save(uploaded_by=self.request.user)
+        if not self.request.user.is_anonymous:
+            serializer.save(uploaded_by=self.request.user)
+        else:
+            serializer.save()
 
 
 class ContentReviewStatusView(generics.RetrieveAPIView):
@@ -31,9 +37,15 @@ class ContentReviewStatusView(generics.RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         review_details = ReviewService.get_review_details(instance)
-        
-        review_status = {}
+        print(review_details)
+        review_status = []
         for detail in review_details:
-            review_status[detail.guideline.title] = detail.passed
-        
+            review_status.append({
+                'guideline_title': detail.guideline.title,
+                'status': detail.passed,
+                'guideline_description': detail.guideline.description
+                })
+        if len(review_status) == 0:
+            review_status.append({'message': 'No guideline found'})
+
         return Response(review_status)
