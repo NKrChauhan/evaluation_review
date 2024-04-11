@@ -1,8 +1,8 @@
 from rest_framework import generics
 
-from .permissions import ComplianceUserPermission
-from .models import Guideline
-from .serializers import GuidelineSerializer
+from ..permissions import ComplianceUserPermission
+from apps.compliance.models import Guideline
+from ..serializers import GuidelineSerializer
 
 
 class GuidelineListView(generics.ListCreateAPIView):

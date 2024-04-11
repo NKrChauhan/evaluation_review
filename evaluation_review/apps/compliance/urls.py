@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import GuidelineListView, GuidelineDetailView
+from .views.guidelines import GuidelineListView, GuidelineDetailView
 
 
 urlpatterns = [
